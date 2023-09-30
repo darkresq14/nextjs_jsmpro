@@ -6,4 +6,4 @@
 - Shadcn/ui
 - Tailwindcss
 - Sanity
-- 
+- Optimized
