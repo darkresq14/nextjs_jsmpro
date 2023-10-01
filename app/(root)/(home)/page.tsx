@@ -12,7 +12,7 @@ interface Props {
 
 const Page = async ({ searchParams }: Props) => {
   const resources = await getResources({
-    query: '',
+    query: searchParams?.query || '',
     category: searchParams?.category || '',
     page: '1',
   });
@@ -29,25 +29,31 @@ const Page = async ({ searchParams }: Props) => {
       </section>
       <Filters />
 
-      <section className="flex-center mt-6 w-full flex-col sm:mt-20">
-        <Header />
-        <div className="mt-12 flex w-full flex-wrap justify-center gap-16 sm:justify-start">
-          {resources?.length > 0 ? (
-            resources.map((resource: any) => (
-              <ResourceCard
-                key={resource._id}
-                title={resource.title}
-                id={resource._id}
-                image={resource.image}
-                downloadLink={resource.downloadLink}
-                views={resource.views}
-              />
-            ))
-          ) : (
-            <p className="body-regular text-white-400">No resources found</p>
-          )}
-        </div>
-      </section>
+      {(searchParams?.query || searchParams?.category) && (
+        <section className="flex-center mt-6 w-full flex-col sm:mt-20">
+          <Header
+            title="Resources"
+            query={searchParams?.query || ''}
+            category={searchParams?.category || ''}
+          />
+          <div className="mt-12 flex w-full flex-wrap justify-center gap-16 sm:justify-start">
+            {resources?.length > 0 ? (
+              resources.map((resource: any) => (
+                <ResourceCard
+                  key={resource._id}
+                  title={resource.title}
+                  id={resource._id}
+                  image={resource.image}
+                  downloadLink={resource.downloadLink}
+                  views={resource.views}
+                />
+              ))
+            ) : (
+              <p className="body-regular text-white-400">No resources found</p>
+            )}
+          </div>
+        </section>
+      )}
     </main>
   );
 };

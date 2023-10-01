@@ -7,3 +7,4 @@
 - Tailwindcss
 - Sanity
 - Optimized for Web Performance
+  - debouncing search input
