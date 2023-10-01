@@ -2,7 +2,11 @@ import Filters from '@/components/Filters';
 import Header from '@/components/Header';
 import ResourceCard from '@/components/ResourceCard';
 import SearchForm from '@/components/SearchForm';
-import { getResources } from '@/sanity/actions';
+import {
+  SanityResourceInterface,
+  SanityResourcePlaylistInterface,
+} from '@/lib/types/sanity.types';
+import { getResources, getResourcePlaylist } from '@/sanity/actions';
 
 export const revalidate = 900;
 
@@ -11,11 +15,14 @@ interface Props {
 }
 
 const Page = async ({ searchParams }: Props) => {
-  const resources = await getResources({
+  const resources: SanityResourceInterface[] = await getResources({
     query: searchParams?.query || '',
     category: searchParams?.category || '',
     page: '1',
   });
+
+  const resourcePlaylists: SanityResourcePlaylistInterface[] =
+    await getResourcePlaylist();
 
   return (
     <main className="flex-center paddings mx-auto w-full max-w-screen-2xl flex-col">
@@ -38,12 +45,12 @@ const Page = async ({ searchParams }: Props) => {
           />
           <div className="mt-12 flex w-full flex-wrap justify-center gap-16 sm:justify-start">
             {resources?.length > 0 ? (
-              resources.map((resource: any) => (
+              resources.map((resource: SanityResourceInterface) => (
                 <ResourceCard
                   key={resource._id}
                   title={resource.title}
                   id={resource._id}
-                  image={resource.image}
+                  poster={resource.poster}
                   downloadLink={resource.downloadLink}
                   views={resource.views}
                 />
@@ -54,6 +61,31 @@ const Page = async ({ searchParams }: Props) => {
           </div>
         </section>
       )}
+
+      {!(searchParams?.query || searchParams?.category) &&
+        resourcePlaylists.map((playlist: SanityResourcePlaylistInterface) => {
+          return (
+            <section
+              key={playlist._id}
+              className="flex-center mt-6 w-full flex-col sm:mt-20">
+              <h1 className="heading3 self-start text-white-800">
+                {playlist.title}
+              </h1>
+              <div className="mt-12 flex w-full flex-wrap justify-center gap-16 sm:justify-start">
+                {playlist.resources.map((resource: SanityResourceInterface) => (
+                  <ResourceCard
+                    key={resource._id}
+                    title={resource.title}
+                    id={resource._id}
+                    poster={resource.poster}
+                    downloadLink={resource.downloadLink}
+                    views={resource.views}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })}
     </main>
   );
 };

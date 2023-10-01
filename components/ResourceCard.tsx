@@ -5,19 +5,19 @@ import Link from 'next/link';
 interface Props {
   id: string;
   title: string;
-  image: string;
+  poster: string;
   views: number;
   downloadLink: string;
 }
 
-const ResourceCard = ({ id, title, image, views, downloadLink }: Props) => {
+const ResourceCard = ({ id, title, poster, views, downloadLink }: Props) => {
   return (
     <Card className="w-full max-w-fit border-0 !bg-transparent sm:max-w-[356px]">
-      <Link href={`/resource/${id}`}>
+      <Link href={downloadLink} target="_blank" rel="noopener noreferrer">
         <CardHeader className="flex-center flex-col gap-2.5 !p-0">
           <div className="h-fit w-full">
             <Image
-              src={image}
+              src={poster}
               alt={title}
               className="h-full rounded-md object-cover"
               width={384}
@@ -40,7 +40,9 @@ const ResourceCard = ({ id, title, image, views, downloadLink }: Props) => {
           {views}
         </div>
         <Link
-          href={`/resource/${id}`}
+          href={downloadLink}
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex-center text-gradient_purple-blue body-semibold gap-1.5">
           Download Now
           <Image src="/arrow-blue.svg" alt="download" width={13} height={10} />

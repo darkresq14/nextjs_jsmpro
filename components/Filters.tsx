@@ -1,10 +1,11 @@
 'use client';
 
+import { ResourceCategoriesEnum } from '@/lib/types/sanity.types';
 import { formUrlQuery } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
-const links = ['all', 'Next 13', 'frontend', 'backend', 'fullstack'];
+const links = Object.values(ResourceCategoriesEnum);
 
 const Filters = () => {
   const [active, setActive] = useState('');

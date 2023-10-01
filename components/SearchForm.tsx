@@ -36,7 +36,9 @@ const SearchForm = () => {
   }, [router, search, searchParams]);
 
   return (
-    <form className="flex-center mx-auto mt-10 w-full sm:-mt-10 sm:px-5">
+    <form
+      className="flex-center mx-auto mt-10 w-full sm:-mt-10 sm:px-5"
+      onSubmit={(e) => e.preventDefault()}>
       <label className="flex-center relative w-full max-w-3xl">
         <Image
           src="/magnifying-glass.svg"
